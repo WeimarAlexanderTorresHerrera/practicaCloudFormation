@@ -5,4 +5,4 @@ Resources:
     MyBucket:
         Type: AWS::S3::Bucket
         Properties:
-            BucketName: my-unique-S3-bucket-name
+            BucketName: bucket-weimar-cloudformation-99

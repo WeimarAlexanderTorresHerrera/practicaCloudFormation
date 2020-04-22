@@ -1,8 +1,17 @@
 AWSTemplateFormatVersion : '2010-09-09'
 
+Parameters:
+  bucketName: 
+    Type: String
+
 Description: my template
 Resources:
     MyBucket:
         Type: AWS::S3::Bucket
         Properties:
-            BucketName: bucket-weimar-cloudformation-99
+            BucketName: !Ref bucketName
+
+
+Outputs:
+  OuputValue1:
+    Value: !Ref MyBucket

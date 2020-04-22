@@ -1,4 +1,6 @@
 AWSTemplateFormatVersion : '2010-09-09'
+Transform:
+  - AWS::Serverless-2016-10-31
 
 Parameters:
   bucketName: 
@@ -6,12 +8,50 @@ Parameters:
 
 Description: my template
 Resources:
-    MyBucket:
-        Type: AWS::S3::Bucket
-        Properties:
-            BucketName: !Ref bucketName
+  MyLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: rpp-ip-cluster-lambda-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: my-lambda-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
 
+  MyLambda1:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: my-lambda-1
+      Runtime: python3.6
+      CodeUri: ./build
+      Handler: lambda1.handler
+      Role: !GetAtt MyLambdaRole.Arn
+  
+  MyLambda2:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: my-lambda-2
+      Runtime: python3.6
+      CodeUri: ./build
+      Handler: lambda2.handler
+      Role: !GetAtt MyLambdaRole.Arn
 
 Outputs:
-  OuputValue1:
-    Value: !Ref MyBucket
+  RoleARN:
+    Value: !GetAtt MyLambdaRole.Arn

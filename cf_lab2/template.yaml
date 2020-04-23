@@ -2,9 +2,9 @@ AWSTemplateFormatVersion : '2010-09-09'
 Transform:
   - AWS::Serverless-2016-10-31
 
-Parameters:
-  bucketName: 
-    Type: String
+#Parameters:
+#  bucketName: 
+#    Type: String
 
 Description: my template
 Resources:
@@ -42,6 +42,9 @@ Resources:
       CodeUri: ./build
       Handler: lambda1.handler
       Role: !GetAtt MyLambdaRole.Arn
+      Environment:
+        Variables:
+          MY_NAME: Weimar
   
   MyLambda2:
     Type: AWS::Serverless::Function

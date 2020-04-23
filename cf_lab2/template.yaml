@@ -2,9 +2,9 @@ AWSTemplateFormatVersion : '2010-09-09'
 Transform:
   - AWS::Serverless-2016-10-31
 
-#Parameters:
-#  bucketName: 
-#    Type: String
+Parameters:
+  Project: 
+    Type: String
 
 Description: my template
 Resources:
@@ -41,6 +41,8 @@ Resources:
       Runtime: python3.6
       CodeUri: ./build
       Handler: lambda1.handler
+      Timeout: 30
+      MemorySize: 500
       Role: !GetAtt MyLambdaRole.Arn
       Environment:
         Variables:
@@ -49,7 +51,7 @@ Resources:
   MyLambda2:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: my-lambda-2
+      FunctionName: !Join ["-", [!Ref Project, "lambda-1"]]
       Runtime: python3.6
       CodeUri: ./build
       Handler: lambda2.handler

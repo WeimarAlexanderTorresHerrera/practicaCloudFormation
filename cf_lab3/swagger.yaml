@@ -1,8 +1,25 @@
 openapi: 3.0.0
 
+x-amazon-apigateway-request-validators:
+  basic:
+    validateRequestBody: false
+    validateRequestParameters: true
+
 paths:
   /users:
     get:
+      x-amazon-apigateway-request-validator: basic
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: user_name
+          required: false
+          schema:
+            type: string
       x-amazon-apigateway-integration:
         type: "aws_proxy"
         uri:
